@@ -149,7 +149,7 @@ The rules sit in `RULES` and are hand-set; they get tuned once the signal table 
 
 ## Production
 
-Live at https://tracehound.193-233-233-118.sslip.io (behind Caddy; a real domain comes later).
+Live at https://tracehound.pro (behind Caddy).
 
 - `/opt/tracehound`, `docker compose -f deploy/compose.yaml`: `web` (site and API on 127.0.0.1:8797, `TRUST_PROXY=1` so daily limits count real IPs, samples 3 fresh tokens every 3 h and records 24 h outcomes hourly) and `watch` (live watch). Memory caps 400 MB and 300 MB.
 - `data/` is a host volume: labels from the repo plus everything the app collects (checks, outcomes, rings, alerts, accounts, credit log). A deploy never overwrites it; only the label files are synced.

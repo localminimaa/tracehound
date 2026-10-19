@@ -21,7 +21,7 @@ import { loadAlerts, type Alert } from "./watch.ts";
 import { fmtAmount, short } from "./util.ts";
 
 const API = `${process.env.TELEGRAM_API || "https://api.telegram.org"}/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-const SITE = (process.env.PUBLIC_URL || "https://tracehound.193-233-233-118.sslip.io").replace(/\/$/, "");
+const SITE = (process.env.PUBLIC_URL || "https://tracehound.pro").replace(/\/$/, "");
 const POLL_MIN = Number(process.env.TG_POLL_MIN) || 5;
 const TOKENS_TOTAL = 40; // watched tokens across all chats
 const WALLET_QUIET_MIN = 30; // a busy wallet gets at most one message in this many minutes

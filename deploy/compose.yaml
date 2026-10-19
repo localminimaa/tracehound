@@ -36,7 +36,7 @@ services:
     restart: unless-stopped
     env_file: ../.env
     environment:
-      PUBLIC_URL: "https://tracehound.193-233-233-118.sslip.io"
+      PUBLIC_URL: "https://tracehound.pro"
     command: ["node", "src/telegram-cli.ts"]
     volumes: ["../data:/app/data"]
     mem_limit: 300m

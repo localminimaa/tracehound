@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://tracehound.193-233-233-118.sslip.io"><img src="https://img.shields.io/badge/live-demo-ffb547?style=for-the-badge&labelColor=0a0d16" alt="Live demo" /></a>
+  <a href="https://tracehound.pro"><img src="https://img.shields.io/badge/live-demo-ffb547?style=for-the-badge&labelColor=0a0d16" alt="Live demo" /></a>
   <img src="https://img.shields.io/badge/chains-9%20traced%20%C2%B7%205%20exits-4fd1e0?style=for-the-badge&labelColor=0a0d16" alt="Chains" />
   <img src="https://img.shields.io/badge/node-24-3ccf8e?style=for-the-badge&labelColor=0a0d16&logo=nodedotjs&logoColor=white" alt="Node 24" />
   <img src="https://img.shields.io/badge/typescript-strict-6ea8ff?style=for-the-badge&labelColor=0a0d16&logo=typescript&logoColor=white" alt="TypeScript" />
