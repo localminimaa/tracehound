@@ -1,0 +1,4 @@
+#!/bin/sh
+# Runs the regression set before every push (replays recorded answers: seconds, no credits).
+# Enable once per clone: git config core.hooksPath .githooks   Skip in an emergency: git push --no-verify
+npm run --silent check && npm run --silent regress

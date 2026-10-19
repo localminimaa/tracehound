@@ -1,0 +1,17 @@
+node_modules/
+data/cases/
+.DS_Store
+._*
+data/tokens/
+data/outcomes.json
+data/smart/
+data/rings.json
+data/regress-cache/
+data/credits/
+data/img/
+data/app.db*
+data/alerts.jsonl
+data/watch-state.json
+data/telegram.json
+data/agent.json
+data/og/

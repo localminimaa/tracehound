@@ -1,0 +1,32 @@
+{
+  "name": "tracehound",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Paste a hacker's address or exploit tx — get the money trail, funding source and linked wallets in minutes.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/server.ts",
+    "trace": "node src/cli.ts",
+    "token": "node src/token-cli.ts",
+    "check": "tsc -p .",
+    "smart": "node src/smart-cli.ts",
+    "regress": "node scripts/regress.ts",
+    "signals": "node scripts/signals.ts",
+    "plan": "node scripts/plan.ts",
+    "labels:cex": "node scripts/import-cex.ts",
+    "watch": "node src/watch-cli.ts",
+    "bot": "node src/telegram-cli.ts"
+  },
+  "dependencies": {
+    "@noble/curves": "^2.4.0",
+    "@noble/hashes": "^2.4.0",
+    "@resvg/resvg-js": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}

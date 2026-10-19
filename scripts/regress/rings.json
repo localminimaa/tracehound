@@ -1,0 +1,74 @@
+[
+ {
+  "id": "92dsEeg6kjzJsNjDSXSKZRLMQV83YezSV4nFRJKKxYzG",
+  "wallets": [
+   "92dsEeg6kjzJsNjDSXSKZRLMQV83YezSV4nFRJKKxYzG",
+   "BjbBUXXxhcQdNrMEDSsJxLhJ5vMSQavzwtqTZX8QAozS",
+   "DcHBVP5ow7FAsgmCpR8Dm795FxAibLG6esuaVNA64CP6",
+   "ERAzp2xCxB9TopNTrSsuC3V4gWr3h4MR5z9Z4h5RE7Le",
+   "E3cjDjAH2BX6fQ6DFsDucrns6JNa99FqYsKcDd3DRq46",
+   "2V5GGJESvAwRkEveyjaFtky12cmWvWRydv9xg9DEuH53",
+   "GP7X8aTcvjC5vDEkKaBAGAa4rgRkc571d5RpyAGjKH4C",
+   "6ix8A8ieggbJ6aWXwBUwyTscmz6aaR4aj6VE5ofZAm82",
+   "3U5MpMu7hCALYG9PyRsSLo1KzNdvEN9iLZVXxDVepoGK",
+   "GC9zYcHzftMBCNHQM1VYFPgDvrdPsX5vJPtAXsVdo6zL",
+   "5xA5vSdPVLxnvhBwqGzRprR49221DZjdLdXzzDwkXam4",
+   "5UkmHsjZUHtSfh1hq93rDGN7Tq8pzfAtccbVZpqsKyPo",
+   "G4YoD5w6katdxav3DLYb3qqVinYSaHo1TvwdUiToMXHN",
+   "HgdXTCavTgQbaKbiTZdQpWk6zUYkFG6nAXQQZECLWMJb",
+   "9YSBQ73q2kDKz87cXcsS5FrYH9R3z5mng7nNss9NGnEH",
+   "5ZRU4xzKEqgD9U8qdJDFivete7PFYM5knV2zLohEr7Xg",
+   "DWZrosXcmfy3yhieBNpSLe6v1xuttcwJqe5RU1VwQ2Av",
+   "H4n7nvJm46FQT1U3aZhjZJ7W9sVVQ9LCsDJ6oD4sDGNi",
+   "Co2AxtMqJ85wrLHNhrUPvXeUnRWNbpGeBhrpS3AgEeSA",
+   "EUwCQGKRdGcDu8wjoh3dcXGxLX9NnHpT3FEuZkMNiCH5",
+   "7BccHibm59wFTiJCrFYpUgw7jV4aPVU6kCjoiLtqj72i"
+  ],
+  "funders": [
+   "75411St15yTbMacwgN9X5pLg4k2chJF5TK8s9w4bCSpP",
+   "CRtD3sr2ybidVCoDqHk16kPbqDGfgZftG47qNvaJdDfe",
+   "HULzbSEunDMWpwfDRwVtVijbAPMiHdkbFGDmWqBeMhy1",
+   "2bo16LrFJbXBy8jaV8TncxQbZ4K1euYtQGoaAubaUbnA",
+   "DxeuRezDXkxzzBWuS6FgBPJWSknPuHZJWCQSdoxr6brk",
+   "EcGSw5t3zwfrZ7mjHXqMAoz5JaQCWV9x225TDbMFCjvP",
+   "3w1atmQN5BNLS1B6Q1RZfUpAcopC6S5x7JrKxuNdcEza",
+   "7dee9EArG2h6Kg3FDkiX6P4oRm2BgC8h2KAcEVBojKHQ",
+   "C3WkdQxaeu2D7YTrwCZDH1aP1NqhcbH5UEWdrcFHPAng",
+   "3LDsJWsurP5QmQGUwgEbk61EmiXfY3Vx57vE6x5tTfbj",
+   "3mMAXYDrGq7XZXqhH9SLuRhBPfGwdALQbNNuS3yfppSc",
+   "3J8maqAzoTAxgcvmFGdWT3jbeJDkZjaLY4usDEJG4fgh",
+   "7kPkPaRPveThExUYiSpLV9Df5zNawkBgeRfiVzDGo7eu",
+   "tYYrrQmsATrpLGNCba34GhLjwqfvWABwfxWdhuZE2GE",
+   "FmTAuwerRhetsuU1SB1PEd1BrrgDCyBkpiCv9zHCMzE2",
+   "gSPZ2T9crbAD4uMecgAkVg6y7vcw41ig4Q9dFRrRyRU",
+   "342rLJUrsLAuzVwqpXV5BnTYkZYZomD88EHyS4CsGUKK",
+   "AbDXdQSokMUGjR2m27GgC8ZzCXtKHH6LyLpg2RnbpjAu"
+  ],
+  "tokens": [
+   {
+    "mint": "DneSmn3NenxC8CMm4vTJUpTYfigZZKWWbyymq8MjFkw3",
+    "symbol": "ALLOX"
+   },
+   {
+    "mint": "CfRbEWpLB8pWUwrkEGMwMtVBFzAsgJhs4LRNpChUBBDi",
+    "symbol": "RSGP"
+   },
+   {
+    "mint": "EjPr9rQuavUaSMs2HHsbPdAi5KWfvwwF2r1AdW9kRkLR",
+    "symbol": "RSGP"
+   },
+   {
+    "mint": "H73g7ybHwtY4A4U4pxMS9xv9s3BQMPrtz82Ugd8VQskN",
+    "symbol": "FABLES"
+   }
+  ],
+  "playbook": [
+   {
+    "launchpad": "Meteora DBC",
+    "amount": 0.75
+   }
+  ],
+  "firstSeen": 1792263675,
+  "lastSeen": 1792267012
+ }
+]

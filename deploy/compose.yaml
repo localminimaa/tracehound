@@ -1,0 +1,43 @@
+# docker compose -f deploy/compose.yaml up -d --build   (run from /opt/tracehound)
+# web: the site and API on 127.0.0.1:8797 behind the host's Caddy; it also records 24 h outcomes hourly and
+#      samples fresh tokens every SAMPLE_EVERY_H hours. watch: ring wallets and ring-playbook launches.
+# bot: the Telegram bot (idle until TELEGRAM_BOT_TOKEN is in .env).
+# The daily ring scan runs from the host's cron: deploy/cron.sh smart
+name: tracehound
+services:
+  web:
+    build: { context: .., dockerfile: deploy/Dockerfile }
+    image: tracehound:latest
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      PORT: "8797"
+      TRUST_PROXY: "1"
+      SAMPLE_EVERY_H: "3"
+      SAMPLE_N: "3"
+    ports: ["127.0.0.1:8797:8797"]
+    volumes: ["../data:/app/data"]
+    mem_limit: 400m
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+  watch:
+    image: tracehound:latest
+    pull_policy: never # built by web
+    depends_on: [web]
+    restart: unless-stopped
+    env_file: ../.env
+    command: ["node", "src/watch-cli.ts"]
+    volumes: ["../data:/app/data"]
+    mem_limit: 300m
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+  bot:
+    image: tracehound:latest
+    pull_policy: never # built by web
+    depends_on: [web]
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      PUBLIC_URL: "https://tracehound.193-233-233-118.sslip.io"
+    command: ["node", "src/telegram-cli.ts"]
+    volumes: ["../data:/app/data"]
+    mem_limit: 300m
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }

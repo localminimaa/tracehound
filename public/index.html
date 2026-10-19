@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tracehound</title>
+  <!--og-->
+  <link rel="icon" href="hound.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Martian+Mono:wght@700&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/marked@12.0.2/marked.min.js"></script>
+  <script src="https://unpkg.com/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body class="home">
+  <div class="hounds" aria-hidden="true"><i class="hd hd-a"><b></b></i><i class="hd hd-b"><b></b></i><i class="hd hd-c"><b></b></i></div>
+  <header class="top">
+    <a class="brand" href="/"><img src="hound.png" alt="" /><span>TRACEHOUND</span></a>
+    <nav class="nav">
+      <a href="/">Tracer</a>
+      <a href="/?tokens" id="navTokens">Token Check</a>
+      <a href="/?rings" id="navRings">Rings</a>
+      <a href="/?agent" id="navAgent">Agent</a>
+      <a href="/#cases">Cases</a>
+      <a href="/?method" id="navMethod">Method</a>
+      <a href="/?account" id="navAccount">Account</a>
+    </nav>
+    <div id="topSearch" class="top-search"></div>
+    <div class="top-r">
+      <a id="acct" class="acct" href="/?account" title="Your account: plan, usage, payments" hidden></a>
+      <button id="soundT" class="sound-t" title="Sounds" aria-label="Sounds" aria-pressed="false"></button>
+      <button id="signIn" class="signin">Sign in</button>
+      <select id="lang" title="Interface language">
+        <option value="en">EN</option>
+        <option value="ru">RU</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <section id="hero" class="home-wrap">
+    <div class="hero-c">
+      <h1>TRACE<span class="glow">HOUND</span></h1>
+      <p class="tagline">Paste a hacker's address or an exploit tx. Get the money trail, who funded it and the wallets tied to it, every link a transaction you can open.</p>
+      <div id="heroSearch">
+        <form id="form" class="search" autocomplete="off">
+          <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" /><path d="m13 13 4 4" /></svg>
+          <input id="q" placeholder="Search addresses and transactions to trace" spellcheck="false" required />
+          <select id="chain" title="Chain">
+            <option value="auto">All chains</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="base">Base</option>
+            <option value="arbitrum">Arbitrum</option>
+            <option value="optimism">Optimism</option>
+            <option value="bsc">BSC</option>
+            <option value="polygon">Polygon</option>
+            <option value="solana">Solana</option>
+            <option value="tron">Tron</option>
+            <option value="bitcoin">Bitcoin</option>
+          </select>
+          <kbd>/</kbd>
+          <button id="go">Trace</button>
+        </form>
+      </div>
+      <p class="examples">
+        Try <a href="#" data-q="0x47666fab8bd0ac7003bce3f5c3585383f09486e2">Bybit Exploiter</a>
+        <a href="#" data-q="TPwXAPwYaDCm7GrzNFiMmNnofrxEVURXRM">OTC Desk (ZachXBT thread)</a>
+        <a href="#" data-q="TRrbo9HNAjvKZKn9TnXARLmnmrpqKvPfAR">Tron → THORChain</a>
+      </p>
+      <div class="ticker" id="ticker" hidden><div class="ticker-track" id="tickerTrack"></div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="col">
+        <div class="sec-h"><h2>Latest Case</h2><a href="#" id="previewOpen" class="sec-a" hidden>Open case ›</a></div>
+        <div class="card preview" id="preview">
+          <div id="previewLead" class="preview-lead" hidden></div>
+          <div id="previewGraph" class="preview-graph"><p class="empty">No cases yet</p></div>
+          <div id="previewClock" class="preview-clock" hidden></div>
+          <div class="preview-f" id="previewMeta"></div>
+        </div>
+
+        <div class="sec-h"><h2>Token Checks</h2><a href="/?tokens" class="sec-a" id="homeTokMore">All checks ›</a></div>
+        <div class="card"><table class="tbl zebra t-checks"><thead><tr><th>Time</th><th>Token</th><th class="r">Risk</th><th>Main reason</th></tr></thead><tbody id="homeTok"><tr><td colspan="4" class="muted">Loading…</td></tr></tbody></table></div>
+
+        <div class="sec-h" id="how"><h2>Method</h2><a href="/?method" class="sec-a" id="howMore">Full method ›</a></div>
+        <div class="card how">
+          <div class="hrow"><span class="k">Funding</span><p>First money the wallet ever received, followed back up to four hops until an exchange, mixer or bridge.</p></div>
+          <div class="hrow"><span class="k">Siblings</span><p>Other wallets the same funder topped up around the same time. Usually the same operator.</p></div>
+          <div class="hrow"><span class="k">Outflows</span><p>Largest recipients, three levels deep. Swaps paid to a fresh wallet are followed through.</p></div>
+          <div class="hrow"><span class="k">Cross-chain</span><p>Deposits into THORChain, Wormhole, Mayan, deBridge, Across, Stargate, other LayerZero token bridges and Circle's CCTP matched to the payout on the other chain, and followed there.</p></div>
+          <div class="hrow"><span class="k">Deposits</span><p>Wallets forwarding nearly everything to an exchange. The exchange can freeze and identify.</p></div>
+        </div>
+
+        <div class="sec-h"><h2>Coverage</h2></div>
+        <div class="card cov" id="coverage"></div>
+
+      </div>
+
+      <div class="col" id="cases">
+        <div class="sec-h"><h2>Overview</h2></div>
+        <div class="card tiles home-tiles" id="homeStats"></div>
+
+        <div class="sec-h"><h2>All Cases</h2><span class="sec-n" id="casesN"></span></div>
+        <div class="card">
+          <div class="filters"><span class="chip on">ALL</span><span class="chip" id="totals"></span></div>
+          <table class="tbl zebra t-cases">
+            <thead><tr><th>Time</th><th>Query</th><th>Route</th><th class="r">Wallets</th><th>Top finding</th></tr></thead>
+            <tbody id="caseRows"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="sec-h"><h2>Latest Leads</h2><span class="sec-n">high confidence</span></div>
+        <div class="card leads" id="homeLeads"><p class="empty">Loading…</p></div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="tok" class="home-wrap tok" hidden>
+    <div class="tok-h">
+      <div>
+        <h1>Token Check</h1>
+        <p class="muted">Solana, Base and BSC. Who launched the token, what the contract lets them do, and whether the first buyers are the developer's own wallets.</p>
+      </div>
+      <form id="tform" class="search" autocomplete="off">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" /><path d="m13 13 4 4" /></svg>
+        <input id="tq" placeholder="Token address on Solana, Base or BSC" spellcheck="false" required />
+        <button id="tgo">Check</button>
+      </form>
+    </div>
+    <div id="tbody"></div>
+  </section>
+
+  <section id="methodPage" class="home-wrap method" hidden>
+    <div class="m-head">
+      <h1>Method</h1>
+      <p>Every link Tracehound draws between two wallets is a transaction you can open. This page says what each check looks at, where the data comes from, how sure each kind of finding is, and where the trail stops.</p>
+    </div>
+
+    <div class="m-grid">
+      <nav class="m-toc">
+        <a href="#m-trace">Tracer</a>
+        <a href="#m-conf">Confidence</a>
+        <a href="#m-token">Token check</a>
+        <a href="#m-sources">Sources</a>
+        <a href="#m-limits">Limits</a>
+        <a href="#m-acc">Accuracy</a>
+        <a href="#m-sig">Signals</a>
+      </nav>
+
+      <div class="m-body">
+        <div class="sec-h" id="m-trace"><h2>Tracer</h2></div>
+        <div class="card how">
+          <div class="hrow"><span class="k">Funding</span><p>The first money the wallet ever received, followed back up to four hops until it reaches an exchange, a mixer, a bridge or a contract. An exchange withdrawal is the strongest lead: the exchange knows the account.</p></div>
+          <div class="hrow"><span class="k">Siblings</span><p>Other wallets whose first money came from the same funder around the same time. A shared first funder usually means one operator.</p></div>
+          <div class="hrow"><span class="k">Outflows</span><p>Recipients ranked by their share of each asset leaving the wallet, three levels deep, four branches per wallet. Tokens of unknown value weigh less than real money.</p></div>
+          <div class="hrow"><span class="k">Swaps</span><p>Money sent into a router or pool is opened up: when the swap pays its output to another wallet, the trace continues from that wallet.</p></div>
+          <div class="hrow"><span class="k">Liquidity</span><p>On EVM chains every traced wallet's liquidity positions are checked: Uniswap V2 style LP tokens and V3 position NFTs minted to it. When the LP tokens or the position go to another wallet, when they are minted straight to another wallet, or when pulling the liquidity pays someone else, the money moved without a transfer between the two. The trace links them and continues from the new holder.</p></div>
+          <div class="hrow"><span class="k">Cross-chain</span><p>Deposits into THORChain, Wormhole, Mayan, deBridge, Across, Stargate, other LayerZero token bridges and Circle's CCTP are matched to the payout on the other chain through each bridge's own index, and the trace continues there (Bitcoin and Tron included).</p></div>
+          <div class="hrow"><span class="k">Deposits</span><p>A wallet that forwards most of what it gets to an exchange is a deposit address. Deposit addresses belong to one exchange account, so the exchange can identify and freeze.</p></div>
+          <div class="hrow"><span class="k">Labels</span><p>Exchanges, mixers, bridges and known exploiters come from open label data, the wallets exchanges publish in their proof-of-reserves reports (Solana and Tron included), Dune (with a key) and labels added by hand. A wallet already tagged as an exploiter is flagged.</p></div>
+          <div class="hrow"><span class="k">Loop</span><p>Loot that comes back to the wallet that paid the attacker's gas proves one operator controls both sides.</p></div>
+          <div class="hrow"><span class="k">USD</span><p>Each flow of a known asset is priced at the hour it moved (DefiLlama). A token that only calls itself "USDT" gets no dollar value.</p></div>
+          <div class="hrow"><span class="k">Time zone</span><p>The longest daily window with no activity, read as sleep. Weak evidence, only a hint.</p></div>
+        </div>
+
+        <div class="sec-h" id="m-conf"><h2>Confidence</h2></div>
+        <div class="card how">
+          <div class="hrow"><span class="k"><span class="tag high">high</span></span><p>The chain itself proves it: an exchange withdrawal or deposit, a bridge's own index matching both sides, loot back to the funder, a public exploiter label.</p></div>
+          <div class="hrow"><span class="k"><span class="tag medium">medium</span></span><p>A strong pattern that still has innocent explanations: shared first funder, a likely deposit address without an exchange label, money leaving through a bridge or mixer.</p></div>
+          <div class="hrow"><span class="k"><span class="tag">low</span></span><p>A hint to check by hand: a contract as the first funder, an ordinary wallet at the end of the funding trail, the time zone.</p></div>
+        </div>
+
+        <div class="sec-h" id="m-token"><h2>Token check</h2></div>
+        <div class="card how">
+          <div class="hrow"><span class="k">Contract</span><p>Mint or freeze authority still set (Solana). On Base and BSC: honeypot, trading tax, mint function, blacklist, paused transfers, hidden owner, proxy, unverified source (GoPlus).</p></div>
+          <div class="hrow"><span class="k">Developer</span><p>Who paid for the developer's wallet and when, a mixer behind it, what the developer and the other wallets of that funder launched before and how many of those tokens are dead now.</p></div>
+          <div class="hrow"><span class="k">Exit</span><p>How much of the launch bag the developer has already sold.</p></div>
+          <div class="hrow"><span class="k">Bundles</span><p>First buyers funded by the developer, the developer's funder or one shared funder; wallets that bought in the launch block.</p></div>
+          <div class="hrow"><span class="k">Holders</span><p>Share held by the developer's wallets and the top 10, pools and program accounts excluded; holders created in the last 24 h; one wallet handing the token out to many, or many sending it back to one.</p></div>
+          <div class="hrow"><span class="k">Rings</span><p>Wallets of known pump rings among early buyers and holders, a developer funded from a ring, and a launch funded the way a ring funds its launches.</p></div>
+          <div class="hrow"><span class="k">Market</span><p>Whether pool liquidity can be pulled, bot-like trading, socials reused from earlier tokens.</p></div>
+          <div class="hrow"><span class="k">Score</span><p>Each finding adds points; 25+ is medium risk, 50+ high. The points are set by hand today and are being calibrated against what happened to checked tokens 24 h later (table below).</p></div>
+        </div>
+
+        <div class="sec-h" id="m-sources"><h2>Sources</h2></div>
+        <div class="card"><table class="tbl zebra" id="m-src"></table></div>
+
+        <div class="sec-h" id="m-limits"><h2>Limits</h2></div>
+        <div class="card how">
+          <div class="hrow"><span class="k">Bridges</span><p>Bridges run by exchanges still end the trace on the source chain.</p></div>
+          <div class="hrow"><span class="k">Bitcoin</span><p>The sender of a tx is its largest input and outputs back to an input are change. CoinJoin and batched exchange payouts break that reading.</p></div>
+          <div class="hrow"><span class="k">Tron</span><p>Only the exchange wallets published in proof-of-reserves reports are known; other services show as busy wallets unless labeled by hand.</p></div>
+          <div class="hrow"><span class="k">Base, BSC, OP</span><p>Wallet histories there need a paid Etherscan plan. Token checks on Base and BSC skip the developer's funding and past launches.</p></div>
+          <div class="hrow"><span class="k">Depth</span><p>Three levels, four branches per wallet, up to 80 wallets per case and two chain crossings. Small branches below 2% of a flow are left out.</p></div>
+          <div class="hrow"><span class="k">Identity</span><p>Tracehound never says who someone is. It shows where the money went and who can identify the owner.</p></div>
+        </div>
+
+        <div class="sec-h" id="m-acc"><h2>Accuracy</h2><span class="sec-n">token checks, value 24 h later</span></div>
+        <div class="card" id="m-accuracy"><p class="empty">Loading…</p></div>
+
+        <div class="sec-h" id="m-sig"><h2>Signals</h2><span class="sec-n">which reasons came true</span></div>
+        <div class="card" id="m-signals"><p class="empty">Loading…</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ringsPage" class="home-wrap ringsp" hidden>
+    <div class="m-head">
+      <h1>Pump Rings</h1>
+      <p>Groups of wallets that buy almost nothing but the same few tokens, early, funded from linked wallets: the people pumping those tokens, not lucky traders. Found by the daily smart money scan; each ring shows how it launches, what it pumped and how those tokens ended.</p>
+    </div>
+    <div id="ringsBody"></div>
+  </section>
+
+  <section id="agentPage" class="home-wrap agentp" hidden>
+    <div class="m-head">
+      <h1>The Hound on Paper</h1>
+      <p>A trading agent that plays the token check's verdicts with pretend money. Every token the sampler checks is a chance to buy: the agent skips high risk, stakes less the higher the score, and sells when the developer sells, the price doubles, it halves, the pool disappears or a day passes. Next to it, the naive baseline buys every one of those tokens for $100 and holds for a day. No real money until the agent beats that baseline for weeks.</p>
+    </div>
+    <div id="agentBody"></div>
+  </section>
+
+  <main id="app" class="app" hidden>
+    <div class="casebar">
+      <div class="case-q">
+        <span class="lbl">Case</span>
+        <code id="caseQ"></code>
+        <button class="txt" id="copyQ">Copy</button>
+      </div>
+      <div id="route" class="route"></div>
+      <div id="stats" class="stats"></div>
+      <button class="share-b" id="shareCase" hidden>Share</button>
+    </div>
+
+    <div class="workspace">
+      <div class="canvas">
+        <div id="graph"></div>
+        <div id="wait" class="wait" hidden><div class="wait-c"><div id="waitSteps" class="stepper"></div><div class="wait-f"><span class="spin"></span><span id="timer">0s</span><span class="muted">tracing</span></div></div></div>
+        <div id="gtools" class="gtools"></div>
+        <div id="node" class="inspector" hidden></div>
+        <div id="gtip" class="gtip" hidden></div>
+        <div id="minimap" class="minimap" hidden><img alt="" /><i></i></div>
+        <div id="tline" class="tline" hidden><button id="tlPlay">▶</button><input id="tlRange" type="range" /><span id="tlDate"></span></div>
+        <div class="zoom">
+          <button id="zin" title="Zoom in">+</button>
+          <button id="zout" title="Zoom out">−</button>
+          <button id="fit" title="Fit to screen">⤢</button>
+        </div>
+        <div class="canvas-foot"><div id="legend" class="legend"></div></div>
+      </div>
+
+      <aside class="side">
+        <nav class="tabs">
+          <button data-tab="overview" class="on">Overview</button>
+          <button data-tab="findings">Findings <span id="nF" class="count"></span></button>
+          <button data-tab="flows">Flows <span id="nE" class="count"></span></button>
+          <button data-tab="report">Report</button>
+          <button data-tab="log">Log</button>
+        </nav>
+        <div class="pane" id="overview"></div>
+        <div class="pane" id="findings" hidden></div>
+        <div class="pane" id="flows" hidden></div>
+        <div class="pane" id="report" hidden></div>
+        <div class="pane" id="logpane" hidden><pre id="log"></pre></div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="authModal" class="modal" hidden>
+    <div class="modal-c auth-c">
+      <div class="modal-h"><b>Sign in with a wallet</b><button class="txt x" id="authClose">✕</button></div>
+      <div class="auth-b">
+        <button class="wbtn" id="wSol"><span class="wl sol"></span><span><b>Solana wallet</b><small>Phantom, Solflare, Backpack</small></span></button>
+        <button class="wbtn" id="wEvm"><span class="wl evm"></span><span><b>Ethereum wallet</b><small>MetaMask, Rabby, Coinbase Wallet</small></span></button>
+        <p class="auth-n">Your wallet signs a one-time message to prove you own the address. It costs nothing, sends no transaction and gives the site no access to your funds. No email, no password.</p>
+        <p class="auth-s" id="authStatus"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="payModal" class="modal" hidden>
+    <div class="modal-c pay-c">
+      <div class="modal-h"><b id="payTitle">Upgrade</b><button class="txt x" id="payClose">✕</button></div>
+      <div class="pay-b" id="payBody"></div>
+    </div>
+  </div>
+
+  <section id="accountPage" class="home-wrap accountp" hidden>
+    <div class="m-head"><h1>Account</h1><p>Your plan, what you used today and what each plan includes.</p></div>
+    <div id="accountBody"></div>
+  </section>
+
+  <div id="share" class="modal" hidden>
+    <div class="modal-c">
+      <div class="modal-h"><b>Share</b><button class="txt x" id="shareClose">✕</button></div>
+      <img id="shareImg" alt="Share card" />
+      <textarea id="shareText" rows="3" spellcheck="false"></textarea>
+      <div class="acts">
+        <button class="main" id="sharePost">Post on X</button>
+        <button id="shareCopy">Copy image</button>
+        <button id="shareSave">Download PNG</button>
+        <span class="muted" id="shareNote"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="buddy" class="buddy idle" title="The hound"><div class="bub" id="buddyBub" hidden></div><i class="sh"><b></b></i><span class="scent"><i></i><i></i><i></i><i></i><i></i></span></div>
+
+  <nav class="bnav" id="bnav">
+    <a href="/" data-go="home"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/></svg><span>Tracer</span></a>
+    <a href="/?tokens" data-go="tokens"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M9 12.5l2 2 4-4.5"/></svg><span>Tokens</span></a>
+    <a href="/#cases" data-go="cases"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span>Cases</span></a>
+    <a href="/?agent" data-go="agent"><svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg><span>Agent</span></a>
+    <a href="/?account" data-go="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 19.5c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5"/></svg><span>Account</span></a>
+    <button id="bmore" type="button"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/></svg><span>More</span></button>
+    <div class="bmenu" id="bmenu" hidden>
+      <a href="/?rings" data-go="rings">Rings</a>
+      <a href="/?method" data-go="method">Method</a>
+    </div>
+  </nav>
+
+  <footer class="foot"><span>© Tracehound</span><span>Every link between wallets comes from on-chain data and points to its transaction. Tracehound doesn't guess who anyone is.</span></footer>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

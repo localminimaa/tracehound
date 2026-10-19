@@ -1,0 +1,26 @@
+{
+  "_note": "Seed labels used during the trace before Dune answers. kind: cex | mixer | bridge | swap. EVM addresses are matched lowercase on every EVM chain. Extend freely.",
+  "evm": {
+    "0x12d66f87a04a9e220743712ce6d9bb1b5616b8fc": ["mixer", "Tornado Cash 0.1 ETH"],
+    "0x47ce0c6ed5b0ce3d3a51fdb1c52dc66a7c3c2936": ["mixer", "Tornado Cash 1 ETH"],
+    "0x910cbd523d972eb0a6f4cae4618ad62622b39dbf": ["mixer", "Tornado Cash 10 ETH"],
+    "0xa160cdab225685da1d56aa342ad8841c3b53f291": ["mixer", "Tornado Cash 100 ETH"],
+    "0xd90e2f925da726b50c4ed8d0fb90ad053324f31b": ["mixer", "Tornado Cash Router"],
+    "0x28c6c06298d514db089934071355e5743bf21d60": ["cex", "Binance 14"],
+    "0x21a31ee1afc51d94c2efccaa2092ad1028285549": ["cex", "Binance 15"],
+    "0xdfd5293d8e347dfe59e90efd55b2956a1343963d": ["cex", "Binance 16"],
+    "0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43": ["cex", "Coinbase 10"],
+    "0xda9dfa130df4de4673b89022ee50ff26f6ea73cf": ["cex", "Kraken 13"],
+    "0x6cc5f688a315f3dc28a7781717a9a798a59fda7b": ["cex", "OKX"],
+    "0x4e5b2e1dc63f6b91cb6cd759936495434c7e972f": ["swap", "FixedFloat"],
+    "0x5c7bcd6e7de5423a257d81b442095a1a6ced35c5": ["bridge", "Across SpokePool"],
+    "0xd37bbe5744d730a1d98d8dc97c42f0ca46ad7146": ["bridge", "THORChain Router"]
+  },
+  "solana": {
+    "5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9": ["cex", "Binance"],
+    "H8sMJSCQxfKiFTCfDR3DUMLPwcRbM61LGFJ8N4dK3WjS": ["cex", "Coinbase"],
+    "5VCwKtCXgCJ6kit5FybXjvriW3xELsFDhYrPSqtJNmcD": ["cex", "OKX"],
+    "AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2": ["cex", "Bybit"],
+    "FWznbcNXWQuHTawe9RxvQ2LdCENssh12dsznf4RiouN5": ["cex", "Kraken"]
+  }
+}
