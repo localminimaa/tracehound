@@ -2,13 +2,13 @@
 // the app writes) is swapped in place as it appears; strings with values in them go through t() with {name} slots.
 // What the server writes (findings, reasons, logs) stays English.
 const LANGS = { en: "EN", ru: "RU", zh: "中文" };
+// English unless the visitor picked another language in the switch (remembered per browser)
 const LANG = (() => {
   try {
     const s = localStorage.getItem("lang");
     if (LANGS[s]) return s;
   } catch {}
-  const n = (navigator.language || "").toLowerCase();
-  return n.startsWith("ru") ? "ru" : n.startsWith("zh") ? "zh" : "en";
+  return "en";
 })();
 const LOCALE = { en: "en-GB", ru: "ru-RU", zh: "zh-CN" }[LANG];
 

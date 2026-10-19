@@ -40,7 +40,7 @@ A fresh install starts with the demo set in `seed/` (traced hacks, token checks 
 
 ## Languages
 
-The interface speaks English, Russian and Chinese (switch at the top right; remembered per browser, the browser's language by default). `public/i18n.js` holds the table: English text → Russian and Chinese. Plain text on the page is swapped in place as it appears; strings with values go through `t("… {name} …", { name })`, so new UI text needs an entry there. Titles of findings and reasons, signal lines and liquidity notes written by the server are translated on the page by pattern (`FINDINGS` in `i18n.js`; an unknown title shows in English, so a new finding needs a pattern there). Their longer descriptions, logs and the agent's diary stay English.
+The interface speaks English, Russian and Chinese (switch at the top right; remembered per browser, English by default). `public/i18n.js` holds the table: English text → Russian and Chinese. Plain text on the page is swapped in place as it appears; strings with values go through `t("… {name} …", { name })`, so new UI text needs an entry there. Titles of findings and reasons, signal lines and liquidity notes written by the server are translated on the page by pattern (`FINDINGS` in `i18n.js`; an unknown title shows in English, so a new finding needs a pattern there). Their longer descriptions, logs and the agent's diary stay English.
 
 ## Trace from a token check
 
